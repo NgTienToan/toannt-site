@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { NextSeo } from 'next-seo'
+import Head from 'next/head'
 import React, { ReactNode } from 'react'
 import Footer from './Footer'
 import Header from './Header'
@@ -18,7 +19,11 @@ const variants = {
 
 const Layout = ({ children, title, description }: Props): JSX.Element => (
   <div>
-    <NextSeo title={title} description={description} openGraph={{ title, description }} />
+    <Head>
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <link rel="icon" href="/thumb.jpg" />
+    </Head>
     <Header />
     <motion.main
       initial="hidden"
