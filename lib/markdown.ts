@@ -1,10 +1,3 @@
-import unified from 'unified'
-import parse from 'remark-parse'
-import remarkHtml from 'remark-html'
-import gfm from 'remark-gfm'
-import matter from 'gray-matter'
-const stripHtmlComments = require('strip-html-comments')
-import * as highlight from 'remark-highlight.js'
 
 export const sanitizeDevToMarkdown = (markdown: string): string => {
   let correctedMarkdown = ''
@@ -19,7 +12,6 @@ export const sanitizeDevToMarkdown = (markdown: string): string => {
 }
 
 export const convertMarkdownToHtml = (markdown: string): string => {
-  const { content } = matter(markdown)
-  const html = { content }
+  const html = { markdown }
   return String(html)
 }

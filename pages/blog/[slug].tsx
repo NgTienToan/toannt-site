@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import fs from 'fs'
 import moment from 'moment'
 import { GetStaticPaths, GetStaticProps } from 'next'
@@ -10,6 +11,9 @@ import PageTitle from '../../components/PageTitle'
 import { getAllBlogArticles, getArticleFromCache } from '../../lib/devto'
 import IArticle from '../../models/IArticle'
 
+import Markdown from 'markdown-to-jsx';
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 const cacheFile = '.dev-to-cache.json'
 
 interface IProps {
@@ -21,28 +25,36 @@ interface IParams extends ParsedUrlQuery {
     slug: string
 }
 
-const ArticlePage = ({ article, publishedDate }: IProps): JSX.Element => (
-    <Layout title={article.title} description={article.description}>
-        {article.coverImage && (
-            <img
-                src={article.coverImage}
-                alt={`Cover for ${article.title}`}
-                className="md:mt-6 lg:mt-10 xl:mt-14 h-40 sm:h-48 md:h-52 lg:h-64 xl:h-68 2xl:h-80 mx-auto"
-            />
-        )}
-        <PageTitle title={article.title} center icons={false} />
-        <p className="text-center w-full my-4 italic leading-relaxed text-gray-600">
-            {publishedDate}
-        </p>
-        <section className="mt-6 font-light leading-relaxed w-full flex flex-col items-center">
-            <article
-                className="prose dark:prose-dark lg:prose-lg w-full md:w-5/6 xl:w-9/12"
-                dangerouslySetInnerHTML={{ __html: article.html }}
-            />
-            <DevToCallToAction href={article.devToURL} />
-        </section>
-    </Layout>
-)
+const ArticlePage = ({ article, publishedDate }: IProps): JSX.Element => {
+    console.log(article.markdown)
+    return (
+        <Layout title={article.title} description={article.description} >
+            {
+                article.coverImage && (
+                    <img
+                        src={article.coverImage}
+                        alt={`Cover for ${article.title}`}
+                        className="md:mt-6 lg:mt-10 xl:mt-14 h-40 sm:h-48 md:h-52 lg:h-64 xl:h-68 2xl:h-80 mx-auto"
+                    />
+                )
+            }
+            < PageTitle title={article.title} center icons={false} />
+            <p className="text-center w-full my-4 italic leading-relaxed text-gray-600">
+                {publishedDate}
+            </p>
+            <section className="mt-6 font-light leading-relaxed w-full flex flex-col items-center">
+                {/* <article
+                    className="prose dark:prose-dark lg:prose-lg w-full md:w-5/6 xl:w-9/12"
+                    dangerouslySetInnerHTML={{ __html: article.html }}
+                /> */}
+                <article className="mt-6 font-light leading-relaxed w-full flex flex-col items-center">
+                    <ReactMarkdown children={article.markdown} remarkPlugins={[remarkGfm]} />
+                </article>
+                <DevToCallToAction href={article.devToURL} />
+            </section>
+        </Layout >
+    )
+}
 
 export const getStaticProps: GetStaticProps = async (context) => {
     const { slug } = context.params as IParams

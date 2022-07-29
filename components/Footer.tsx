@@ -1,29 +1,19 @@
 import Link from 'next/link'
+import SocialIcons from './SocialIcons'
 
-const links: { name: string, href: string, hideOnMobile?: boolean }[] = [
-  {
-    name: 'Home',
-    href: '/',
-    hideOnMobile: true,
-  },
-  {
-    name: 'Blog',
-    href: '/blog',
-  },
-  {
-    name: 'Portfolio',
-    href: '/portfolio',
-  }
-]
-
-const Navigation = () => (
-  <nav>
-    {links.map(({ name, href, hideOnMobile = false }) => (
-      <Link key={name} href={href}>
-        <a className={`ml-8 ${hideOnMobile ? 'hidden' : 'inline'} sm:inline`}>{name}</a>
-      </Link>
-    ))}
-  </nav>
+const Footer = (): JSX.Element => (
+  <footer className="w-full flex flex-col items-center">
+    <SocialIcons />
+    <a
+      className="text-sm mb-4 text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-colors">
+      toannt.site
+    </a>
+    <Link href="/blog/rewriting-my-website-with-a-devto-cms">
+      <a className="text-sm mb-8 text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-colors">
+        Powered by the Dev.to API. Find out more.
+      </a>
+    </Link>
+  </footer>
 )
 
-export default Navigation;
+export default Footer
