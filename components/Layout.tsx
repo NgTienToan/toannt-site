@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { NextSeo } from 'next-seo'
 import React, { ReactNode } from 'react'
 import Footer from './Footer'
 import Header from './Header'
@@ -15,8 +16,9 @@ const variants = {
   exit: { opacity: 0, x: 0, y: -100 },
 }
 
-const Layout = ({ children }: Props): JSX.Element => (
+const Layout = ({ children, title, description }: Props): JSX.Element => (
   <div>
+    <NextSeo title={title} description={description} openGraph={{ title, description }} />
     <Header />
     <motion.main
       initial="hidden"
